@@ -3,6 +3,8 @@
 import type React from "react"
 
 import { useState } from "react"
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
 
 interface Vaccination {
   id: number
@@ -13,6 +15,16 @@ interface Vaccination {
 }
 
 export default function VaccinationReminders() {
+
+  const router = useRouter()
+
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    if (!token) {
+      router.push("/login")
+    }
+  }, [])
+  
   const [vaccinations, setVaccinations] = useState<Vaccination[]>([
     {
       id: 1,

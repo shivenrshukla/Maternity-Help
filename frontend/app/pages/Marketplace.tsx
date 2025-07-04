@@ -1,6 +1,8 @@
 "use client"
 
 import { useState } from "react"
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
 
 interface Product {
   id: number
@@ -15,6 +17,14 @@ interface Product {
 }
 
 export default function Marketplace() {
+  const router = useRouter()
+
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    if (!token) {
+      router.push("/login")
+    }
+  }, [])
   const [products] = useState<Product[]>([
     {
       id: 1,

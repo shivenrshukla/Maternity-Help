@@ -1,9 +1,9 @@
 "use client"
 
 import type React from "react"
-
+import { useEffect } from "react"
 import { useState } from "react"
-
+import { useRouter } from "next/navigation"
 interface Post {
   id: number
   title: string
@@ -25,6 +25,13 @@ interface Reply {
 }
 
 export default function Community() {
+    const router = useRouter()
+    useEffect(() => {
+      const token = localStorage.getItem("token")
+      if (!token) {
+        router.push("/login")
+      }
+    }, [])
   const [posts, setPosts] = useState<Post[]>([
     {
       id: 1,

@@ -16,11 +16,12 @@ const app = express();
 connectDB();
 
 // Middleware
-app.use(cors({
-    origin: process.env.CORS_ORIGIN || '*', 
-    credentials: true,
-    optionsSuccessStatus: 200
-}));
+app.use(
+  cors({
+    origin: "http://localhost:3000", // ✅ Allow Next.js dev server
+    credentials: true, // ✅ Needed if using cookies (optional)
+  })
+)
 
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));

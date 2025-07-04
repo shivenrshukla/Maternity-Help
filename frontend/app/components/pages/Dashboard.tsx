@@ -1,8 +1,19 @@
 "use client"
 
 import Link from "next/link"
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
 
 export default function Dashboard() {
+  const router = useRouter()
+
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    if (!token) {
+      router.push("/login")
+    }
+  }, [])
+
   const upcomingAppointments = [
     { id: 1, type: "Prenatal Checkup", date: "2024-01-15", doctor: "Dr. Sarah Johnson" },
     { id: 2, type: "Vaccination", date: "2024-01-20", doctor: "Dr. Mike Chen" },
@@ -45,9 +56,7 @@ export default function Dashboard() {
         <div className="card">
           <div className="card-header">
             <h3 className="card-title">Upcoming Appointments</h3>
-            <Link href="/appointments" className="btn btn-secondary">
-              View All
-            </Link>
+            <Link href="/appointments" className="btn btn-secondary">View All</Link>
           </div>
           <div>
             {upcomingAppointments.map((appointment) => (
@@ -66,9 +75,7 @@ export default function Dashboard() {
         <div className="card">
           <div className="card-header">
             <h3 className="card-title">Vaccination Reminders</h3>
-            <Link href="/vaccinations" className="btn btn-secondary">
-              Manage
-            </Link>
+            <Link href="/vaccinations" className="btn btn-secondary">Manage</Link>
           </div>
           <div>
             <div className="alert alert-warning">
@@ -83,9 +90,7 @@ export default function Dashboard() {
         <div className="card">
           <div className="card-header">
             <h3 className="card-title">Health Tracker</h3>
-            <Link href="/health-tracker" className="btn btn-secondary">
-              Track Now
-            </Link>
+            <Link href="/health-tracker" className="btn btn-secondary">Track Now</Link>
           </div>
           <div>
             <p>
@@ -97,18 +102,14 @@ export default function Dashboard() {
             <p>
               <strong>Fetal Movement:</strong> Active (Today)
             </p>
-            <Link href="/health-tracker" className="btn btn-primary mt-1">
-              Add New Entry
-            </Link>
+            <Link href="/health-tracker" className="btn btn-primary mt-1">Add New Entry</Link>
           </div>
         </div>
 
         <div className="card">
           <div className="card-header">
             <h3 className="card-title">Community Activity</h3>
-            <Link href="/community" className="btn btn-secondary">
-              Join Discussion
-            </Link>
+            <Link href="/community" className="btn btn-secondary">Join Discussion</Link>
           </div>
           <div>
             {recentPosts.map((post) => (

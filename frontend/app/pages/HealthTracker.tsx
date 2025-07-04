@@ -1,7 +1,8 @@
 "use client"
 
 import type React from "react"
-
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import {
   LineChart,
@@ -28,6 +29,15 @@ interface HealthEntry {
 }
 
 export default function HealthTracker() {
+
+  const router = useRouter()
+
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    if (!token) {
+      router.push("/login")
+    }
+  }, [])
   const [entries, setEntries] = useState<HealthEntry[]>([
     {
       id: 1,

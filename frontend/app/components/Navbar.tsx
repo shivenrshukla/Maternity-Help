@@ -1,25 +1,14 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { Heart } from "lucide-react"
-
-const navItems = [
-  { path: "/", label: "Dashboard", icon: "📊" },
-  { path: "/vaccinations", label: "Vaccinations", icon: "💉" },
-  { path: "/health-tracker", label: "Health Tracker", icon: "📈" },
-  { path: "/find-care", label: "Find Care", icon: "🏥" },
-  { path: "/community", label: "Community", icon: "👥" },
-  { path: "/video-call", label: "Video Call", icon: "📹" },
-  { path: "/marketplace", label: "Marketplace", icon: "🛍️" },
-  { path: "/symptoms-checker", label: "Symptoms", icon: "🩺" },
-  { path: "/sos", label: "SOS", icon: "🚨" },
-  { path: "/nutrition", label: "Nutrition", icon: "🥗" },
-  { path: "/login", label: "Login", icon: "👤" }
-]
 
 export default function Navbar() {
   const [activeRoute, setActiveRoute] = useState("/")
   const [scrolled, setScrolled] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const router = useRouter()
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20)
@@ -27,8 +16,20 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    setIsLoggedIn(!!token)
+  }, [])
+
   const handleNavClick = (path: string) => {
     setActiveRoute(path)
+    router.push(path)
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem("token")
+    setIsLoggedIn(false)
+    router.push("/login")
   }
 
   const isActive = (path: string) => activeRoute === path
@@ -50,23 +51,56 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Horizontal Scrollable Nav */}
+        {/* Buttons */}
         <div className="mt-2 overflow-x-auto whitespace-nowrap no-scrollbar pb-2">
           <div className="flex space-x-2 min-w-fit">
-            {navItems.map((item) => (
+            {[
+              { path: "/", label: "Dashboard", icon: "📊" },
+              { path: "/vaccinations", label: "Vaccinations", icon: "💉" },
+              { path: "/health-tracker", label: "Health Tracker", icon: "📈" },
+              { path: "/find-care", label: "Find Care", icon: "🏥" },
+              { path: "/community", label: "Community", icon: "👥" },
+              { path: "/video-call", label: "Video Call", icon: "📹" },
+              { path: "/marketplace", label: "Marketplace", icon: "🛍️" },
+              { path: "/symptoms-checker", label: "Symptoms", icon: "🩺" },
+              { path: "/sos", label: "SOS", icon: "🚨" },
+              { path: "/nutrition", label: "Nutrition", icon: "🥗" },
+            ].map(({ path, label, icon }) => (
               <button
-                key={item.path}
-                onClick={() => handleNavClick(item.path)}
-                className={`px-4 py-2 rounded-full text-sm font-medium flex items-center space-x-2 transition-all duration-200 ${
-                  isActive(item.path)
-                    ? 'bg-emerald-600 text-white shadow'
-                    : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
+                key={path}
+                onClick={() => handleNavClick(path)}
+                className={`px-4 py-2 rounded-full text-sm font-medium flex items-center space-x-2 ${
+                  isActive(path)
+                    ? "bg-emerald-600 text-white shadow"
+                    : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
                 }`}
               >
-                <span>{item.icon}</span>
-                <span>{item.label}</span>
+                <span>{icon}</span>
+                <span>{label}</span>
               </button>
             ))}
+
+            {isLoggedIn ? (
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 rounded-full text-sm font-medium flex items-center space-x-2 bg-red-100 text-red-700 hover:bg-red-200"
+              >
+                <span>🚪</span>
+                <span>Logout</span>
+              </button>
+            ) : (
+              <button
+                onClick={() => handleNavClick("/login")}
+                className={`px-4 py-2 rounded-full text-sm font-medium flex items-center space-x-2 ${
+                  isActive("/login")
+                    ? "bg-emerald-600 text-white shadow"
+                    : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
+                }`}
+              >
+                <span>👤</span>
+                <span>Login</span>
+              </button>
+            )}
           </div>
         </div>
       </div>

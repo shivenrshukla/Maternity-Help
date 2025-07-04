@@ -10,11 +10,35 @@ export default function Login() {
     rememberMe: false,
   })
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Mock login functionality
-    alert("Login functionality would be implemented here")
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault()
+
+  try {
+    const res = await fetch(`http://localhost:8001/api/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: formData.email,
+        password: formData.password,
+      }),
+    })
+
+    const data = await res.json()
+    if (!res.ok) {
+      alert(data.message || "Login failed")
+    } else {
+      // Store token in localStorage or cookie
+      localStorage.setItem("token", data.token)
+      alert("Login successful!")
+      window.location.href = "/" // or wherever
+    }
+  } catch (err) {
+    alert("Something went wrong. Please try again.")
   }
+}
+
 
   return (
     <div style={{ maxWidth: "400px", margin: "2rem auto" }}>
@@ -92,7 +116,7 @@ export default function Login() {
           </div>
         </div>
       </div>
-
+      
       <div style={{ textAlign: "center", marginTop: "2rem", color: "var(--text-light)", fontSize: "0.9rem" }}>
         <p>By signing in, you agree to our Terms of Service and Privacy Policy</p>
       </div>

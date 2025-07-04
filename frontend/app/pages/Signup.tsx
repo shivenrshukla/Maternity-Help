@@ -16,29 +16,53 @@ export default function Signup() {
 
   const [errors, setErrors] = useState<string[]>([])
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault()
+  const newErrors: string[] = []
 
-    const newErrors: string[] = []
-
-    if (formData.password !== formData.confirmPassword) {
-      newErrors.push("Passwords do not match")
-    }
-
-    if (formData.password.length < 8) {
-      newErrors.push("Password must be at least 8 characters long")
-    }
-
-    if (!formData.agreeToTerms) {
-      newErrors.push("You must agree to the Terms of Service")
-    }
-
-    setErrors(newErrors)
-
-    if (newErrors.length === 0) {
-      alert("Account created successfully! Please check your email for verification.")
-    }
+  if (formData.password !== formData.confirmPassword) {
+    newErrors.push("Passwords do not match")
   }
+
+  if (formData.password.length < 8) {
+    newErrors.push("Password must be at least 8 characters long")
+  }
+
+  if (!formData.agreeToTerms) {
+    newErrors.push("You must agree to the Terms of Service")
+  }
+
+  setErrors(newErrors)
+  if (newErrors.length > 0) return
+
+  try {
+    const res = await fetch(`http://localhost:8001/api/auth/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: `${formData.firstName} ${formData.lastName}`,
+        email: formData.email,
+        password: formData.password,
+      }),
+    })
+
+    const data = await res.json()
+    if (!res.ok) {
+      setErrors([data.message || "Signup failed"])
+    } else {
+      // Save token in localStorage
+      localStorage.setItem("token", data.token)
+      alert("Signup successful! Redirecting to dashboard.")
+      // Redirect to dashboard or profile
+      window.location.href = "/"
+    }
+  } catch (err) {
+    setErrors(["Something went wrong. Please try again."])
+  }
+}
+
 
   return (
     <div style={{ maxWidth: "500px", margin: "2rem auto" }}>

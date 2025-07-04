@@ -1,6 +1,8 @@
 "use client"
 
 import { useState } from "react"
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
 
 interface MealPlan {
   id: number
@@ -30,6 +32,15 @@ interface NutritionTip {
 }
 
 export default function NutritionPlans() {
+
+  const router = useRouter()
+
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    if (!token) {
+      router.push("/login")
+    }
+  }, [])
   const [selectedTrimester, setSelectedTrimester] = useState(2)
   const [selectedWeek, setSelectedWeek] = useState(28)
 

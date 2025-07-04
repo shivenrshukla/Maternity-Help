@@ -1,6 +1,8 @@
 "use client"
 
 import { useState } from "react"
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
 
 interface HealthcareProvider {
   id: number
@@ -15,6 +17,14 @@ interface HealthcareProvider {
 }
 
 export default function FindCare() {
+
+  const router = useRouter()
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    if (!token) {
+      router.push("/login")
+    }
+  }, [])
   const [providers] = useState<HealthcareProvider[]>([
     {
       id: 1,

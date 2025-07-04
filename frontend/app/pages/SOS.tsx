@@ -1,8 +1,20 @@
 "use client"
 
 import { useState } from "react"
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
 
 export default function SOS() {
+
+  const router = useRouter()
+
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    if (!token) {
+      router.push("/login")
+    }
+  }, [])
+  
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [emergencyContacts] = useState([
     { name: "Emergency Services", number: "112", type: "emergency" },

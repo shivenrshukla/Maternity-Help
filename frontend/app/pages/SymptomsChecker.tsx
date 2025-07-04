@@ -3,6 +3,8 @@
 import type React from "react"
 
 import { useState } from "react"
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
 
 interface Symptom {
   id: string
@@ -11,6 +13,15 @@ interface Symptom {
 }
 
 export default function SymptomsChecker() {
+
+  const router = useRouter()
+
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    if (!token) {
+      router.push("/login")
+    }
+  }, [])
   const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([])
   const [additionalInfo, setAdditionalInfo] = useState({
     duration: "",
