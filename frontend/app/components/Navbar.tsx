@@ -1,14 +1,14 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
 import { Heart } from "lucide-react"
 
 export default function Navbar() {
-  const [activeRoute, setActiveRoute] = useState("/")
   const [scrolled, setScrolled] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const router = useRouter()
+  const pathname = usePathname() // Get current pathname
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20)
@@ -22,7 +22,6 @@ export default function Navbar() {
   }, [])
 
   const handleNavClick = (path: string) => {
-    setActiveRoute(path)
     router.push(path)
   }
 
@@ -32,7 +31,7 @@ export default function Navbar() {
     router.push("/login")
   }
 
-  const isActive = (path: string) => activeRoute === path
+  const isActive = (path: string) => pathname === path
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -69,7 +68,7 @@ export default function Navbar() {
               <button
                 key={path}
                 onClick={() => handleNavClick(path)}
-                className={`px-4 py-2 rounded-full text-sm font-medium flex items-center space-x-2 ${
+                className={`px-4 py-2 rounded-full text-sm font-medium flex items-center space-x-2 transition-colors ${
                   isActive(path)
                     ? "bg-emerald-600 text-white shadow"
                     : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
@@ -83,7 +82,7 @@ export default function Navbar() {
             {isLoggedIn ? (
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 rounded-full text-sm font-medium flex items-center space-x-2 bg-red-100 text-red-700 hover:bg-red-200"
+                className="px-4 py-2 rounded-full text-sm font-medium flex items-center space-x-2 bg-red-100 text-red-700 hover:bg-red-200 transition-colors"
               >
                 <span>🚪</span>
                 <span>Logout</span>
@@ -91,7 +90,7 @@ export default function Navbar() {
             ) : (
               <button
                 onClick={() => handleNavClick("/login")}
-                className={`px-4 py-2 rounded-full text-sm font-medium flex items-center space-x-2 ${
+                className={`px-4 py-2 rounded-full text-sm font-medium flex items-center space-x-2 transition-colors ${
                   isActive("/login")
                     ? "bg-emerald-600 text-white shadow"
                     : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
