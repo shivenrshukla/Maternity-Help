@@ -94,7 +94,7 @@ app.get('/', (req, res) => {
                     logout: 'POST /api/auth/logout'
                 },
                 admin: {
-                   getAllUsers: 'GET /api/auth/users',
+                    getAllUsers: 'GET /api/auth/users',
                     getUserById: 'GET /api/auth/users/:userId',
                     updateUserRole: 'PUT /api/auth/users/:userId/role',
                     deleteUser: 'DELETE /api/auth/users/:userId'
