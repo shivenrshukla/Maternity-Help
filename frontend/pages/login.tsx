@@ -1,6 +1,6 @@
-import Navbar from "../components/nurturewell/Navbar"
-import Footer from "../components/nurturewell/Footer"
-import Login from "../components/nurturewell/pages/Login"
+import Navbar from "../app/components/Navbar"
+import Footer from "../app/components/Footer"
+import Login from "../app/pages/Login"
 
 export default function LoginPage() {
   return (

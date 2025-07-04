@@ -1,8 +1,7 @@
 "use client"
 
-import type React from "react"
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import Link from "next/link"
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -37,7 +36,6 @@ export default function Signup() {
     setErrors(newErrors)
 
     if (newErrors.length === 0) {
-      // Mock signup functionality
       alert("Account created successfully! Please check your email for verification.")
     }
   }
@@ -145,11 +143,11 @@ export default function Signup() {
               />
               <span style={{ fontSize: "0.9rem" }}>
                 I agree to the{" "}
-                <Link to="/terms" style={{ color: "var(--primary-color)" }}>
+                <Link href="/terms" style={{ color: "var(--primary-color)" }}>
                   Terms of Service
                 </Link>{" "}
                 and{" "}
-                <Link to="/privacy" style={{ color: "var(--primary-color)" }}>
+                <Link href="/privacy" style={{ color: "var(--primary-color)" }}>
                   Privacy Policy
                 </Link>
               </span>
@@ -162,7 +160,7 @@ export default function Signup() {
 
           <div style={{ textAlign: "center", padding: "1rem 0", borderTop: "1px solid var(--border-color)" }}>
             <p style={{ color: "var(--text-light)", marginBottom: "1rem" }}>Already have an account?</p>
-            <Link to="/login" className="btn btn-secondary">
+            <Link href="/login" className="btn btn-secondary">
               Sign In
             </Link>
           </div>

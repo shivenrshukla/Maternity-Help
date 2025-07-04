@@ -1,9 +1,7 @@
 "use client"
 
-import type React from "react"
-
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import Link from "next/link"
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -67,15 +65,17 @@ export default function Login() {
           </button>
 
           <div style={{ textAlign: "center", marginBottom: "1rem" }}>
-            <Link to="/forgot-password" style={{ color: "var(--primary-color)", textDecoration: "none" }}>
-              Forgot your password?
+            <Link href="/forgot-password" legacyBehavior>
+              <a style={{ color: "var(--primary-color)", textDecoration: "none" }}>
+                Forgot your password?
+              </a>
             </Link>
           </div>
 
           <div style={{ textAlign: "center", padding: "1rem 0", borderTop: "1px solid var(--border-color)" }}>
             <p style={{ color: "var(--text-light)", marginBottom: "1rem" }}>Don't have an account?</p>
-            <Link to="/signup" className="btn btn-secondary">
-              Create Account
+            <Link href="/signup" legacyBehavior>
+              <a className="btn btn-secondary">Create Account</a>
             </Link>
           </div>
         </form>
