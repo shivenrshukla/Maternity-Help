@@ -52,7 +52,7 @@ export default function Navbar() {
         </div>
 
         {/* Buttons */}
-        <div className="mt-2 overflow-x-auto whitespace-nowrap no-scrollbar pb-2">
+        <div className="mt-1 overflow-x-auto whitespace-nowrap no-scrollbar pb-2">
           <div className="flex space-x-2 min-w-fit">
             {[
               { path: "/", label: "Dashboard", icon: "📊" },
