@@ -32,6 +32,7 @@ export default function Navbar() {
   }
 
   const isActive = (path: string) => pathname === path
+  if (pathname === "/login" || pathname === "/signup") return null
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -64,6 +65,7 @@ export default function Navbar() {
               { path: "/symptoms-checker", label: "Symptoms", icon: "🩺" },
               { path: "/sos", label: "SOS", icon: "🚨" },
               { path: "/nutrition", label: "Nutrition", icon: "🥗" },
+              { path: "/blog", label: "Blog", icon: "✍️" },
             ].map(({ path, label, icon }) => (
               <button
                 key={path}

@@ -62,90 +62,43 @@ export default function VideoCall() {
     setIsInCall(false)
     setSelectedDoctor(null)
   }
+  const roomName = selectedDoctor
+  ? `nurturewell-${selectedDoctor.id}-${selectedDoctor.name.replace(/\s+/g, "")}-${Date.now()}-${Math.floor(Math.random() * 10000)}`
+  : ""
+
 
   if (isInCall && selectedDoctor) {
-    return (
-      <div>
-        <div className="page-header">
-          <h1 className="page-title">Video Consultation</h1>
-          <p className="page-subtitle">Connected with {selectedDoctor.name}</p>
-        </div>
 
-        <div className="card">
-          <div
-            style={{
-              height: "400px",
-              backgroundColor: "#000",
-              borderRadius: "var(--border-radius)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "white",
-              marginBottom: "1rem",
-              position: "relative",
-            }}
-          >
-            <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: "4rem", marginBottom: "1rem" }}>{selectedDoctor.avatar}</div>
-              <h3>{selectedDoctor.name}</h3>
-              <p>{selectedDoctor.specialty}</p>
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: "20px",
-                  right: "20px",
-                  width: "120px",
-                  height: "80px",
-                  backgroundColor: "#333",
-                  borderRadius: "8px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  border: "2px solid var(--primary-color)",
-                }}
-              >
-                <span style={{ fontSize: "2rem" }}>👤</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex-center gap-1">
-            <button className="btn btn-secondary">🎤 Mute</button>
-            <button className="btn btn-secondary">📹 Camera</button>
-            <button className="btn btn-danger" onClick={endCall}>
-              📞 End Call
-            </button>
-            <button className="btn btn-secondary">💬 Chat</button>
-            <button className="btn btn-secondary">📋 Notes</button>
-          </div>
-        </div>
-
-        <div className="grid grid-2">
-          <div className="card">
-            <h3 className="card-title">Call Information</h3>
-            <p>
-              <strong>Duration:</strong> 00:05:23
-            </p>
-            <p>
-              <strong>Connection:</strong> Excellent
-            </p>
-            <p>
-              <strong>Recording:</strong> Not recording
-            </p>
-          </div>
-
-          <div className="card">
-            <h3 className="card-title">Quick Actions</h3>
-            <div className="flex gap-1 flex-wrap">
-              <button className="btn btn-secondary">Share Screen</button>
-              <button className="btn btn-secondary">Send File</button>
-              <button className="btn btn-secondary">Schedule Follow-up</button>
-            </div>
-          </div>
-        </div>
+  return (
+    <div className="p-4">
+      <div className="page-header">
+        <h1 className="page-title">Video Consultation</h1>
+        <p className="page-subtitle">Connected with {selectedDoctor.name}</p>
       </div>
-    )
-  }
+
+      <div className="card mb-4">
+        <iframe
+          src={`https://meet.jit.si/${roomName}`}
+          allow="camera; microphone; fullscreen; display-capture"
+          style={{
+            width: "100%",
+            height: "500px",
+            border: "0",
+            borderRadius: "12px",
+          }}
+          title="Jitsi Video Call"
+        />
+      </div>
+
+      <div className="text-center">
+        <button className="btn btn-danger" onClick={endCall}>
+          📞 End Call
+        </button>
+      </div>
+    </div>
+  )
+}
+
 
   return (
     <div>
@@ -167,7 +120,22 @@ export default function VideoCall() {
           <div className="alert alert-warning">
             <strong>Upcoming:</strong> Dr. Johnson at 3:00 PM today
           </div>
-          <button className="btn btn-success w-full">📅 Join Scheduled Call</button>
+          <button
+            className="btn btn-success w-full"
+            onClick={() => {
+              const scheduledDoctor = {
+                id: 1,
+                name: "Dr. Sarah Johnson",
+                specialty: "Obstetrician",
+                avatar: "👩‍⚕️",
+                isOnline: true,
+                nextAvailable: "Today at 3:00 PM",
+              }
+              startCall(scheduledDoctor)
+            }}
+          >
+            📅 Join Scheduled Call
+          </button>
         </div>
       </div>
 
