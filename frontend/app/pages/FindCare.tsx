@@ -17,7 +17,7 @@ interface HealthcareProvider {
 }
 
 export default function FindCare() {
-
+  const router = useRouter()
   useEffect(() => {
   const token = localStorage.getItem("token")
   if (!token) {
