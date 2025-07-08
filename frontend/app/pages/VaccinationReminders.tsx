@@ -86,7 +86,6 @@ export default function VaccinationReminders() {
   const [vaccinations, setVaccinations] = useState<Vaccination[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
-  const [_userId, _setUserId] = useState<string>('');
 
   useEffect(() => {
     const token = localStorage.getItem("token")
@@ -167,7 +166,7 @@ export default function VaccinationReminders() {
   const handleAddPreset = () => {
     setShowPresetModal(true)
   }
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSelectPreset = async (preset: any) => {
     try {
       const token = localStorage.getItem("token")
