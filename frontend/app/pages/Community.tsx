@@ -15,7 +15,7 @@ interface Post {
   category: string
   isLiked: boolean
 }
-
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface Reply {
   id: number
   postId: number
