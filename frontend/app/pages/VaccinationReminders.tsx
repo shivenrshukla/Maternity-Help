@@ -86,7 +86,7 @@ export default function VaccinationReminders() {
   const [vaccinations, setVaccinations] = useState<Vaccination[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
-  const [userId, setUserId] = useState("")
+  const [_userId, _setUserId] = useState<string>('');
 
   useEffect(() => {
     const token = localStorage.getItem("token")
