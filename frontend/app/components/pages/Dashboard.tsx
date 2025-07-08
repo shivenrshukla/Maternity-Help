@@ -8,12 +8,11 @@ export default function Dashboard() {
   const router = useRouter()
 
   useEffect(() => {
-    const token = localStorage.getItem("token")
-    if (!token) {
-      router.push("/login")
-    }
-  }, [])
-
+  const token = localStorage.getItem("token")
+  if (!token) {
+    router.push("/login")
+  }
+}, [router]) // ✅ fixed warning
   const upcomingAppointments = [
     { id: 1, type: "Prenatal Checkup", date: "2024-01-15", doctor: "Dr. Sarah Johnson" },
     { id: 2, type: "Vaccination", date: "2024-01-20", doctor: "Dr. Mike Chen" },
