@@ -27,11 +27,11 @@ interface Reply {
 export default function Community() {
     const router = useRouter()
     useEffect(() => {
-      const token = localStorage.getItem("token")
-      if (!token) {
-        router.push("/login")
-      }
-    }, [])
+  const token = localStorage.getItem("token")
+  if (!token) {
+    router.push("/login")
+  }
+}, [router]) // ✅ include router
   const [posts, setPosts] = useState<Post[]>([
     {
       id: 1,
