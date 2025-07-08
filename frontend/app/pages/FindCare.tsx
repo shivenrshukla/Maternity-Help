@@ -18,13 +18,13 @@ interface HealthcareProvider {
 
 export default function FindCare() {
 
-  const router = useRouter()
   useEffect(() => {
-    const token = localStorage.getItem("token")
-    if (!token) {
-      router.push("/login")
-    }
-  }, [])
+  const token = localStorage.getItem("token")
+  if (!token) {
+    router.push("/login")
+  }
+}, [router]) // ✅ include router as dependency
+
   const [providers] = useState<HealthcareProvider[]>([
     {
       id: 1,
