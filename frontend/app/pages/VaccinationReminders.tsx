@@ -384,7 +384,7 @@ export default function VaccinationReminders() {
         <div>
           {vaccinations.length === 0 ? (
             <p style={{ textAlign: "center", padding: "2rem", color: "var(--text-light)" }}>
-              No vaccinations added yet. Click "Add from Schedule" to add standard infant vaccinations.
+              No vaccinations added yet. Click Add from Schedule to add standard infant vaccinations.
             </p>
           ) : (
             vaccinations.map((vaccination) => (
