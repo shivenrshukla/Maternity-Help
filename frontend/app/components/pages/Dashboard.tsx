@@ -30,7 +30,7 @@ export default function Dashboard() {
     <div>
       <div className="page-header">
         <h1 className="page-title">Welcome back, Sarah!</h1>
-        <p className="page-subtitle">Here's your maternal health overview</p>
+        <p className="page-subtitle">Heres your maternal health overview</p>
       </div>
 
       <div className="dashboard-stats">
