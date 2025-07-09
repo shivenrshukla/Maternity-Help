@@ -1,5 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+// Define vaccination type
+interface Vaccination {
+  _id: string
+  name: string
+  dueDate: string
+  status: string
+  notes: string
+  ageGroup: string
+  category: string
+  createdAt: string
+}
+
 // GET /api/vaccinations
 export async function GET(request: NextRequest) {
   console.log("🔥 GET API Route called")
@@ -11,11 +23,12 @@ export async function GET(request: NextRequest) {
     }
 
     // TODO: Replace with DB fetch
-    const vaccinations: any[] = []
+    const vaccinations: Vaccination[] = []
 
     return NextResponse.json(vaccinations)
-  } catch (error: any) {
-    console.error("❌ GET Error:", error)
+  } catch (error: unknown) {
+    const err = error as Error
+    console.error("❌ GET Error:", err.message)
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 })
   }
 }
@@ -43,7 +56,7 @@ export async function POST(request: NextRequest) {
       }, { status: 400 })
     }
 
-    const newVaccination = {
+    const newVaccination: Vaccination = {
       _id: Date.now().toString(),
       name,
       dueDate,
@@ -57,11 +70,12 @@ export async function POST(request: NextRequest) {
     console.log("✅ Creating vaccination:", newVaccination)
 
     return NextResponse.json(newVaccination, { status: 201 })
-  } catch (error: any) {
-    console.error("❌ POST Error:", error)
+  } catch (error: unknown) {
+    const err = error as Error
+    console.error("❌ POST Error:", err.message)
     return NextResponse.json({
       message: 'Internal server error',
-      error: error.message
+      error: err.message
     }, { status: 500 })
   }
 }
