@@ -17,11 +17,11 @@ export default function SymptomsChecker() {
   const router = useRouter()
 
   useEffect(() => {
-    const token = localStorage.getItem("token")
-    if (!token) {
-      router.push("/login")
-    }
-  }, [])
+  const token = localStorage.getItem("token")
+  if (!token) {
+    router.push("/login")
+  }
+}, [router])
   const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([])
   const [additionalInfo, setAdditionalInfo] = useState({
     duration: "",
