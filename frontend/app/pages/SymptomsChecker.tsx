@@ -1,9 +1,7 @@
 "use client"
 
 import type React from "react"
-
-import { useState } from "react"
-import { useEffect } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 
 interface Symptom {
@@ -13,15 +11,16 @@ interface Symptom {
 }
 
 export default function SymptomsChecker() {
-
   const router = useRouter()
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-  const token = localStorage.getItem("token")
-  if (!token) {
-    router.push("/login")
-  }
-}, [router])
+    const token = localStorage.getItem("token")
+    if (!token) {
+      router.push("/login")
+    }
+  }, [router])
+
   const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([])
   const [additionalInfo, setAdditionalInfo] = useState({
     duration: "",
@@ -48,7 +47,7 @@ export default function SymptomsChecker() {
     { id: "breathing", name: "Difficulty Breathing", category: "Respiratory" },
   ]
 
-  const categories = [...new Set(symptoms.map((s) => s.category))]
+  const categories = Array.from(new Set(symptoms.map((s) => s.category)))
 
   const toggleSymptom = (symptomId: string) => {
     if (selectedSymptoms.includes(symptomId)) {
