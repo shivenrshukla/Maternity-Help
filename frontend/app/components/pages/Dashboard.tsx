@@ -8,12 +8,11 @@ export default function Dashboard() {
   const router = useRouter()
 
   useEffect(() => {
-    const token = localStorage.getItem("token")
-    if (!token) {
-      router.push("/login")
-    }
-  }, [])
-
+  const token = localStorage.getItem("token")
+  if (!token) {
+    router.push("/login")
+  }
+}, [router]) // ✅ fixed warning
   const upcomingAppointments = [
     { id: 1, type: "Prenatal Checkup", date: "2024-01-15", doctor: "Dr. Sarah Johnson" },
     { id: 2, type: "Vaccination", date: "2024-01-20", doctor: "Dr. Mike Chen" },
@@ -30,7 +29,7 @@ export default function Dashboard() {
     <div>
       <div className="page-header">
         <h1 className="page-title">Welcome back, Sarah!</h1>
-        <p className="page-subtitle">Here's your maternal health overview</p>
+        <p className="page-subtitle">Heres your maternal health overview</p>
       </div>
 
       <div className="dashboard-stats">

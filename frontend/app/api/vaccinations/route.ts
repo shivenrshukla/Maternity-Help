@@ -1,27 +1,42 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-export async function GET(request) {
+// Define vaccination type
+interface Vaccination {
+  _id: string
+  name: string
+  dueDate: string
+  status: string
+  notes: string
+  ageGroup: string
+  category: string
+  createdAt: string
+}
+
+// GET /api/vaccinations
+export async function GET(request: NextRequest) {
   console.log("🔥 GET API Route called")
-  
+
   try {
     const token = request.headers.get('authorization')?.replace('Bearer ', '')
     if (!token) {
       return NextResponse.json({ message: 'No token provided' }, { status: 401 })
     }
 
-    // TODO: Fetch from database
-    const vaccinations = []
-    
+    // TODO: Replace with DB fetch
+    const vaccinations: Vaccination[] = []
+
     return NextResponse.json(vaccinations)
-  } catch (error) {
-    console.error("❌ GET Error:", error)
+  } catch (error: unknown) {
+    const err = error as Error
+    console.error("❌ GET Error:", err.message)
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 })
   }
 }
 
-export async function POST(request) {
+// POST /api/vaccinations
+export async function POST(request: NextRequest) {
   console.log("🔥 POST API Route called")
-  
+
   try {
     const token = request.headers.get('authorization')?.replace('Bearer ', '')
     if (!token) {
@@ -32,16 +47,16 @@ export async function POST(request) {
     console.log("📋 Request body:", body)
 
     const { name, dueDate, status, notes, ageGroup, category } = body
-    
+
     if (!name || !dueDate || !status || !ageGroup || !category) {
-      return NextResponse.json({ 
+      return NextResponse.json({
         message: 'Missing required fields',
         required: ['name', 'dueDate', 'status', 'ageGroup', 'category'],
         received: body
       }, { status: 400 })
     }
 
-    const newVaccination = {
+    const newVaccination: Vaccination = {
       _id: Date.now().toString(),
       name,
       dueDate,
@@ -53,13 +68,14 @@ export async function POST(request) {
     }
 
     console.log("✅ Creating vaccination:", newVaccination)
-    
+
     return NextResponse.json(newVaccination, { status: 201 })
-  } catch (error) {
-    console.error("❌ POST Error:", error)
-    return NextResponse.json({ 
+  } catch (error: unknown) {
+    const err = error as Error
+    console.error("❌ POST Error:", err.message)
+    return NextResponse.json({
       message: 'Internal server error',
-      error: error.message 
+      error: err.message
     }, { status: 500 })
   }
 }

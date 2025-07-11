@@ -1,7 +1,6 @@
 "use client"
 
-import { useState } from "react"
-import { useEffect } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 
 interface MealPlan {
@@ -32,7 +31,6 @@ interface NutritionTip {
 }
 
 export default function NutritionPlans() {
-
   const router = useRouter()
 
   useEffect(() => {
@@ -40,9 +38,10 @@ export default function NutritionPlans() {
     if (!token) {
       router.push("/login")
     }
-  }, [])
+  }, [router])
+
   const [selectedTrimester, setSelectedTrimester] = useState(2)
-  const [selectedWeek, setSelectedWeek] = useState(28)
+  const selectedWeek = 28 // removed unused setSelectedWeek
 
   const mealPlans: MealPlan[] = [
     {
@@ -135,7 +134,6 @@ export default function NutritionPlans() {
   const currentTips = nutritionTips.filter((tip) => tip.trimester === selectedTrimester)
 
   const downloadPDF = (type: string) => {
-    // Mock download functionality
     alert(`Downloading ${type} PDF...`)
   }
 
@@ -163,7 +161,7 @@ export default function NutritionPlans() {
       </div>
 
       <div className="grid grid-2">
-        {/* Weekly Meal Plan */}
+        {/* Meal Plan */}
         <div className="card">
           <div className="card-header">
             <h3 className="card-title">Week {selectedWeek} Meal Plan</h3>
@@ -172,185 +170,53 @@ export default function NutritionPlans() {
             </button>
           </div>
 
-          <div style={{ marginBottom: "1.5rem" }}>
-            <h4 style={{ color: "var(--primary-color)", marginBottom: "0.5rem" }}>🌅 Breakfast</h4>
-            <ul style={{ paddingLeft: "1.5rem" }}>
-              {currentMealPlan.meals.breakfast.map((meal, index) => (
-                <li key={index} style={{ marginBottom: "0.25rem" }}>
-                  {meal}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div style={{ marginBottom: "1.5rem" }}>
-            <h4 style={{ color: "var(--primary-color)", marginBottom: "0.5rem" }}>🌞 Lunch</h4>
-            <ul style={{ paddingLeft: "1.5rem" }}>
-              {currentMealPlan.meals.lunch.map((meal, index) => (
-                <li key={index} style={{ marginBottom: "0.25rem" }}>
-                  {meal}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div style={{ marginBottom: "1.5rem" }}>
-            <h4 style={{ color: "var(--primary-color)", marginBottom: "0.5rem" }}>🌙 Dinner</h4>
-            <ul style={{ paddingLeft: "1.5rem" }}>
-              {currentMealPlan.meals.dinner.map((meal, index) => (
-                <li key={index} style={{ marginBottom: "0.25rem" }}>
-                  {meal}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 style={{ color: "var(--primary-color)", marginBottom: "0.5rem" }}>🍎 Snacks</h4>
-            <ul style={{ paddingLeft: "1.5rem" }}>
-              {currentMealPlan.meals.snacks.map((snack, index) => (
-                <li key={index} style={{ marginBottom: "0.25rem" }}>
-                  {snack}
-                </li>
-              ))}
-            </ul>
-          </div>
+          {["breakfast", "lunch", "dinner", "snacks"].map((type) => (
+            <div key={type} style={{ marginBottom: "1.5rem" }}>
+              <h4 style={{ color: "var(--primary-color)", marginBottom: "0.5rem" }}>
+                {type === "breakfast"
+                  ? "🌅 Breakfast"
+                  : type === "lunch"
+                  ? "🌞 Lunch"
+                  : type === "dinner"
+                  ? "🌙 Dinner"
+                  : "🍎 Snacks"}
+              </h4>
+              <ul style={{ paddingLeft: "1.5rem" }}>
+                {currentMealPlan.meals[type as keyof typeof currentMealPlan.meals].map((item, i) => (
+                  <li key={i} style={{ marginBottom: "0.25rem" }}>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
 
-        {/* Nutritional Information */}
+        {/* Nutrition Info */}
         <div className="card">
           <h3 className="card-title">Daily Nutritional Targets</h3>
-
-          <div style={{ marginBottom: "1rem" }}>
-            <div className="flex-between">
-              <span>Calories</span>
-              <strong>{currentMealPlan.nutrients.calories} kcal</strong>
+          {[
+            { label: "Calories", value: currentMealPlan.nutrients.calories, unit: "kcal", color: "var(--primary-color)", width: "85%" },
+            { label: "Protein", value: currentMealPlan.nutrients.protein, unit: "g", color: "var(--accent-color)", width: "90%" },
+            { label: "Calcium", value: currentMealPlan.nutrients.calcium, unit: "mg", color: "var(--background-highlight)", width: "75%" },
+            { label: "Iron", value: currentMealPlan.nutrients.iron, unit: "mg", color: "#28a745", width: "80%" },
+            { label: "Folic Acid", value: currentMealPlan.nutrients.folicAcid, unit: "mcg", color: "#ffc107", width: "95%" },
+          ].map((item, i) => (
+            <div key={i} style={{ marginBottom: "1rem" }}>
+              <div className="flex-between">
+                <span>{item.label}</span>
+                <strong>{item.value} {item.unit}</strong>
+              </div>
+              <div style={{ width: "100%", height: "8px", backgroundColor: "#e0e0e0", borderRadius: "4px", marginTop: "0.25rem" }}>
+                <div style={{ width: item.width, height: "100%", backgroundColor: item.color, borderRadius: "4px" }}></div>
+              </div>
             </div>
-            <div
-              style={{
-                width: "100%",
-                height: "8px",
-                backgroundColor: "#e0e0e0",
-                borderRadius: "4px",
-                marginTop: "0.25rem",
-              }}
-            >
-              <div
-                style={{
-                  width: "85%",
-                  height: "100%",
-                  backgroundColor: "var(--primary-color)",
-                  borderRadius: "4px",
-                }}
-              ></div>
-            </div>
-          </div>
-
-          <div style={{ marginBottom: "1rem" }}>
-            <div className="flex-between">
-              <span>Protein</span>
-              <strong>{currentMealPlan.nutrients.protein}g</strong>
-            </div>
-            <div
-              style={{
-                width: "100%",
-                height: "8px",
-                backgroundColor: "#e0e0e0",
-                borderRadius: "4px",
-                marginTop: "0.25rem",
-              }}
-            >
-              <div
-                style={{
-                  width: "90%",
-                  height: "100%",
-                  backgroundColor: "var(--accent-color)",
-                  borderRadius: "4px",
-                }}
-              ></div>
-            </div>
-          </div>
-
-          <div style={{ marginBottom: "1rem" }}>
-            <div className="flex-between">
-              <span>Calcium</span>
-              <strong>{currentMealPlan.nutrients.calcium}mg</strong>
-            </div>
-            <div
-              style={{
-                width: "100%",
-                height: "8px",
-                backgroundColor: "#e0e0e0",
-                borderRadius: "4px",
-                marginTop: "0.25rem",
-              }}
-            >
-              <div
-                style={{
-                  width: "75%",
-                  height: "100%",
-                  backgroundColor: "var(--background-highlight)",
-                  borderRadius: "4px",
-                }}
-              ></div>
-            </div>
-          </div>
-
-          <div style={{ marginBottom: "1rem" }}>
-            <div className="flex-between">
-              <span>Iron</span>
-              <strong>{currentMealPlan.nutrients.iron}mg</strong>
-            </div>
-            <div
-              style={{
-                width: "100%",
-                height: "8px",
-                backgroundColor: "#e0e0e0",
-                borderRadius: "4px",
-                marginTop: "0.25rem",
-              }}
-            >
-              <div
-                style={{
-                  width: "80%",
-                  height: "100%",
-                  backgroundColor: "#28a745",
-                  borderRadius: "4px",
-                }}
-              ></div>
-            </div>
-          </div>
-
-          <div style={{ marginBottom: "1rem" }}>
-            <div className="flex-between">
-              <span>Folic Acid</span>
-              <strong>{currentMealPlan.nutrients.folicAcid}mcg</strong>
-            </div>
-            <div
-              style={{
-                width: "100%",
-                height: "8px",
-                backgroundColor: "#e0e0e0",
-                borderRadius: "4px",
-                marginTop: "0.25rem",
-              }}
-            >
-              <div
-                style={{
-                  width: "95%",
-                  height: "100%",
-                  backgroundColor: "#ffc107",
-                  borderRadius: "4px",
-                }}
-              ></div>
-            </div>
-          </div>
-
+          ))}
           <button className="btn btn-primary w-full mt-1">📊 View Detailed Nutrition Report</button>
         </div>
       </div>
 
-      {/* Trimester-Specific Tips */}
+      {/* Tips */}
       <div className="card mt-2">
         <div className="card-header">
           <h3 className="card-title">Trimester {selectedTrimester} Nutrition Tips</h3>
@@ -358,7 +224,6 @@ export default function NutritionPlans() {
             📄 Download Tips PDF
           </button>
         </div>
-
         <div className="grid grid-2">
           {currentTips.map((tip) => (
             <div
@@ -390,78 +255,42 @@ export default function NutritionPlans() {
         </div>
       </div>
 
-      {/* Recipe Suggestions */}
+      {/* Recipes */}
       <div className="card">
         <h3 className="card-title">Healthy Recipe Suggestions</h3>
         <div className="grid grid-3">
-          <div
-            style={{
-              padding: "1rem",
-              backgroundColor: "var(--light-background)",
-              borderRadius: "var(--border-radius)",
-              textAlign: "center",
-            }}
-          >
-            <div style={{ fontSize: "3rem", marginBottom: "0.5rem" }}>🥗</div>
-            <h4 style={{ color: "var(--primary-color)" }}>Quinoa Power Bowl</h4>
-            <p style={{ fontSize: "0.9rem", color: "var(--text-light)" }}>High in protein and fiber</p>
-            <button className="btn btn-secondary">View Recipe</button>
-          </div>
-
-          <div
-            style={{
-              padding: "1rem",
-              backgroundColor: "var(--light-background)",
-              borderRadius: "var(--border-radius)",
-              textAlign: "center",
-            }}
-          >
-            <div style={{ fontSize: "3rem", marginBottom: "0.5rem" }}>🐟</div>
-            <h4 style={{ color: "var(--primary-color)" }}>Baked Salmon</h4>
-            <p style={{ fontSize: "0.9rem", color: "var(--text-light)" }}>Rich in omega-3 fatty acids</p>
-            <button className="btn btn-secondary">View Recipe</button>
-          </div>
-
-          <div
-            style={{
-              padding: "1rem",
-              backgroundColor: "var(--light-background)",
-              borderRadius: "var(--border-radius)",
-              textAlign: "center",
-            }}
-          >
-            <div style={{ fontSize: "3rem", marginBottom: "0.5rem" }}>🥤</div>
-            <h4 style={{ color: "var(--primary-color)" }}>Green Smoothie</h4>
-            <p style={{ fontSize: "0.9rem", color: "var(--text-light)" }}>Packed with vitamins and minerals</p>
-            <button className="btn btn-secondary">View Recipe</button>
-          </div>
+          {[
+            { emoji: "🥗", title: "Quinoa Power Bowl", desc: "High in protein and fiber" },
+            { emoji: "🐟", title: "Baked Salmon", desc: "Rich in omega-3 fatty acids" },
+            { emoji: "🥤", title: "Green Smoothie", desc: "Packed with vitamins and minerals" },
+          ].map((r, i) => (
+            <div
+              key={i}
+              style={{
+                padding: "1rem",
+                backgroundColor: "var(--light-background)",
+                borderRadius: "var(--border-radius)",
+                textAlign: "center",
+              }}
+            >
+              <div style={{ fontSize: "3rem", marginBottom: "0.5rem" }}>{r.emoji}</div>
+              <h4 style={{ color: "var(--primary-color)" }}>{r.title}</h4>
+              <p style={{ fontSize: "0.9rem", color: "var(--text-light)" }}>{r.desc}</p>
+              <button className="btn btn-secondary">View Recipe</button>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* Hydration Tracker */}
+      {/* Hydration */}
       <div className="card">
         <h3 className="card-title">Daily Hydration Goal</h3>
         <div className="flex-between" style={{ marginBottom: "1rem" }}>
           <span>Water Intake Today</span>
           <strong>6 / 8 glasses</strong>
         </div>
-        <div
-          style={{
-            width: "100%",
-            height: "20px",
-            backgroundColor: "#e0e0e0",
-            borderRadius: "10px",
-            marginBottom: "1rem",
-          }}
-        >
-          <div
-            style={{
-              width: "75%",
-              height: "100%",
-              backgroundColor: "#17a2b8",
-              borderRadius: "10px",
-            }}
-          ></div>
+        <div style={{ width: "100%", height: "20px", backgroundColor: "#e0e0e0", borderRadius: "10px", marginBottom: "1rem" }}>
+          <div style={{ width: "75%", height: "100%", backgroundColor: "#17a2b8", borderRadius: "10px" }}></div>
         </div>
         <div className="flex gap-1">
           <button className="btn btn-primary">💧 Add Glass</button>

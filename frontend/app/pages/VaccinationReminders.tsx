@@ -86,7 +86,6 @@ export default function VaccinationReminders() {
   const [vaccinations, setVaccinations] = useState<Vaccination[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
-  const [userId, setUserId] = useState("")
 
   useEffect(() => {
     const token = localStorage.getItem("token")
@@ -167,7 +166,7 @@ export default function VaccinationReminders() {
   const handleAddPreset = () => {
     setShowPresetModal(true)
   }
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSelectPreset = async (preset: any) => {
     try {
       const token = localStorage.getItem("token")
@@ -384,7 +383,7 @@ export default function VaccinationReminders() {
         <div>
           {vaccinations.length === 0 ? (
             <p style={{ textAlign: "center", padding: "2rem", color: "var(--text-light)" }}>
-              No vaccinations added yet. Click "Add from Schedule" to add standard infant vaccinations.
+              No vaccinations added yet. Click Add from Schedule to add standard infant vaccinations.
             </p>
           ) : (
             vaccinations.map((vaccination) => (

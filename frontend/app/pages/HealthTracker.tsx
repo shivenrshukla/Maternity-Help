@@ -33,11 +33,12 @@ export default function HealthTracker() {
   const router = useRouter()
 
   useEffect(() => {
-    const token = localStorage.getItem("token")
-    if (!token) {
-      router.push("/login")
-    }
-  }, [])
+  const token = localStorage.getItem("token")
+  if (!token) {
+    router.push("/login")
+  }
+}, [router]) // ✅ include router as dependency
+
   const [entries, setEntries] = useState<HealthEntry[]>([
     {
       id: 1,

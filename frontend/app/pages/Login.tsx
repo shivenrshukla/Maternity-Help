@@ -153,7 +153,7 @@ export default function Login() {
             }}
           >
             <p style={{ color: "var(--text-light)", marginBottom: "1rem" }}>
-              Don't have an account?
+              Dont have an account?
             </p>
             <Link href="/signup" legacyBehavior>
               <a className="btn btn-secondary">Create Account</a>
